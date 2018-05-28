@@ -1,0 +1,53 @@
+﻿<div class="ui four column doubling stackable grid container" style="height:100%; margin: 0px; padding:0px; float:left;">
+    <div class="column" style="float: left; padding:0px;">
+        <div style="height: 100%;" ng-include="'../../includes/menu.html'"></div>
+    </div>
+    <div class="column">
+        <div ng-app="MyTestSafeweb" ng-controller="UserController" ng-init="load()" style="width:800px; margin: 0 auto;">
+            <h1>Lista de Usuários</h1>
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Usuário</th>
+                        <th>Data de Nascimento</th>
+                        <th>CPF</th>
+                        <th>Perfil</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="user in Users">
+                        <td>{{ user.Id }}</td>
+                        <td>{{ user.Name }}</td>
+                        <td>{{ user.UserName }}</td>
+                        <td>{{ user.Birthdate }}</td>
+                        <td>{{ user.Cpf }}</td>
+                        <td>{{ user.Profile }}</td>
+                        <td style="text-align: center;">
+                            <i class="edit icon" style="cursor:pointer;" ng-click="edit(user.Id)"></i>
+                            <i class="trash alternate outline icon" style="cursor:pointer;" ng-click="deleteUser(user.Id)"></i>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot class="full-width">
+                    <tr>
+                        <th></th>
+                        <th colspan="6">
+                            <div class="ui right floated small primary labeled icon button" ng-click="go('/user')">
+                                <i class="plus icon"></i> Usuário
+                            </div>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+    
+    

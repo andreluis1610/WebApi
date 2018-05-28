@@ -1,0 +1,37 @@
+﻿<div class="ui vertical inverted sticky menu" style="height: 100%; border-radius:0px;" ng-controller="UserController">
+    <div class="item">
+        <div class="header">
+            <i class="user circle outline icon"></i>
+            <b>Olá, {{ getName() }}!</b>
+        </div>
+    </div>
+    <div class="item"></div>
+    <a class="item" href="#!main">
+        <b>Home</b>
+    </a>
+    <div class="item">
+        <div class="header">Cadastro</div>
+        <div class="menu">
+            <a class="item" href="#!user/list">Usuários</a>
+            <a class="item" href="#!supplier/list">Fornecedores</a>
+            <a class="item" href="#!category/list">Categorias</a>
+            <a class="item" href="#!proposal/list">Propostas</a>
+        </div>
+    </div>
+    <div class="item">
+        <div class="header">Propostas</div>
+        <div class="menu">
+            <a class="item" href="#!/">Worklist de Propostas</a>
+        </div>
+    </div>
+    <div class="item">
+        <div class="header">Configuração</div>
+        <div class="menu">
+            <a class="item" href="#!configuration">Prazos</a>
+        </div>
+    </div>
+    <div class="item"></div>
+    <a class="item" href="#">
+        <b>Sair</b>
+    </a>
+</div>

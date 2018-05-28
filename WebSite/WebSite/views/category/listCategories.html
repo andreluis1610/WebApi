@@ -1,0 +1,45 @@
+﻿<div class="ui four column doubling stackable grid container" style="height:100%; margin: 0px; padding:0px; float:left;">
+    <div class="column" style="float: left; padding:0px;">
+        <div style="height: 100%;" ng-include="'../../includes/menu.html'"></div>
+    </div>
+    <div class="column">
+        <div ng-app="MyTestSafeweb" ng-controller="CategoryController" ng-init="load()" style="width:800px; margin: 0 auto;">
+            <h1>Lista de Categorias</h1>
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="category in Categories">
+                        <td>{{ category.Id }}</td>
+                        <td>{{ category.Name }}</td>
+                        <td style="text-align: center;">
+                            <i class="edit icon" style="cursor:pointer;" ng-click="edit(category.Id)"></i>
+                            <i class="trash alternate outline icon" style="cursor:pointer;" ng-click="deleteCategory(category.Id)"></i>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot class="full-width">
+                    <tr>
+                        <th></th>
+                        <th colspan="6">
+                            <div class="ui right floated small primary labeled icon button" ng-click="go('/category')">
+                                <i class="plus icon"></i> Categoria
+                            </div>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+    
+    

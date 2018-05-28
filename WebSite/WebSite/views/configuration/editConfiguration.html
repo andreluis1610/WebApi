@@ -1,0 +1,27 @@
+﻿<div class="ui four column doubling stackable grid container" style="height:100%; margin: 0px; padding:0px; float:left;">
+    <div class="column" style="float: left; padding:0px;">
+        <div style="height: 100%;" ng-include="'../../includes/menu.html'"></div>
+    </div>
+    <div class="column" style="width:800px; margin:0 auto;" ng-init="load()" ng-app="MyTestSafeweb" ng-controller="ConfigurationController">
+        <h2 class="ui header">Configuração - Prazo de aprovação das propostas</h2>
+        <form class="ui form segment" style="width: 100%;">
+            <div class="inline fields">
+                <label for="value">O prazo da proposta irá expirar:</label>
+                <div class="field">
+                    <input type="text" name="value" ng-model="value" placeholder="Configuração">
+                </div>
+                <select class="ui search dropdown" ng-model="timeconfig">
+                    <option value=""></option>
+                    <option value="1" ng-selected="timeconfig == 1">Hora (s)</option>
+                    <option value="2" ng-selected="timeconfig == 2">Dia (s)</option>
+                </select>
+            </div>
+            <div class="ui primary submit button" ng-click="editConfiguration()">Salvar alterações</div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('select.dropdown').dropdown();
+    });
+</script>

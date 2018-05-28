@@ -1,0 +1,46 @@
+﻿<div class="ui four column doubling stackable grid container" style="height:100%; margin: 0px; padding:0px; float:left;">
+    <div class="column" style="float: left; padding:0px;">
+        <div style="height: 100%;" ng-include="'../../includes/menu.html'"></div>
+    </div>
+    <div class="column" style="width:700px; margin:0 auto;" ng-app="MyTestSafeweb" ng-controller="ProposalController">
+        <h2 class="ui header">Cadastro de Proposta</h2>
+        <form class="ui form segment" style="width: 100%;">
+            <div class="field">
+                <label>Data de criação: <b>{{date | date:'dd/MM/yyyy'}}</b></label>
+            </div>
+            <div class="field">
+                <label>Nome</label>
+                <input placeholder="Nome" name="name" ng-model="name" type="text">
+            </div>
+            <div class="field" ng-init="getCategories()">
+                <label>Categoria</label>
+                <select class="ui search dropdown" ng-model="categories">
+                    <option value="">Selecione uma Categoria</option>
+                    <option ng-repeat="category in Categories" value="{{ category.Id }}">{{ category.Name }}</option>
+                </select>
+            </div>
+            <div class="field" ng-init="getSuppliers()">
+                <label>Fornecedor</label>
+                <select class="ui search dropdown" ng-model="suppliers">
+                    <option value="">Selecione um Fornecedor</option>
+                    <option ng-repeat="supplier in Suppliers" value="{{ supplier.Id }}">{{ supplier.Name }}</option>
+                </select>
+            </div>
+            <div class="field">
+                <label>Valor</label>
+                <input placeholder="Valor" name="value" ng-model="value" type="text">
+            </div>
+            <div class="field">
+                <label>Descrição</label>
+                <textarea rows="3" name="description" ng-model="description"></textarea>
+            </div>
+            <div class="ui primary submit button" ng-click="insertProposal()">Cadastrar Proposta</div>
+            <div class="ui clear button">Limpar</div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('select.dropdown').dropdown();
+    });
+</script>

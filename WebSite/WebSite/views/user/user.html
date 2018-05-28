@@ -1,0 +1,46 @@
+﻿<div class="ui four column doubling stackable grid container" style="height:100%; margin: 0px; padding:0px; float:left;">
+    <div class="column" style="float: left; padding:0px;">
+        <div style="height: 100%;" ng-include="'../../includes/menu.html'"></div>
+    </div>
+    <div class="column" style="width:700px; margin:0 auto;" ng-app="MyTestSafeweb" ng-controller="UserController">
+        <h2 class="ui header">Cadastro de Usuário</h2>
+        <form class="ui form segment" style="width: 100%;">
+            <div class="field">
+                <label>Nome</label>
+                <input placeholder="Seu nome" name="name" ng-model="name" type="text">
+            </div>
+            <div class="field">
+                <label>Data de Nascimento</label>
+                <input placeholder="Sua data de nascimento" name="birthdate" ng-model="birthdate" type="text">
+            </div>
+            <div class="field">
+                <label>CPF</label>
+                <input placeholder="CPF" name="cpf" ng-model="cpf" type="text">
+            </div>
+            <div class="field">
+                <label>Usuário</label>
+                <input placeholder="Seu usuário" name="user" ng-model="username" type="text">
+            </div>
+            <div class="field">
+                <label>Senha</label>
+                <input placeholder="Sua senha" name="password" ng-model="password" type="password">
+            </div>
+            <div class="field">
+                <label>Perfil</label>
+                <select class="ui search dropdown" ng-model="userprofile">
+                    <option value="">Selecione um perfil</option>
+                    <option value="1">Analista de Compras</option>
+                    <option value="2">Analista Financeiro</option>
+                    <option value="3">Diretor Financeiro</option>
+                </select>
+            </div>
+            <div class="ui primary submit button" ng-click="insertUser()">Criar usuário</div>
+            <div class="ui clear button">Limpar</div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('select.dropdown').dropdown();
+    });
+</script>

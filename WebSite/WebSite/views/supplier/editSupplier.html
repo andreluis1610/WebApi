@@ -1,0 +1,28 @@
+﻿<div class="ui four column doubling stackable grid container" style="height:100%; margin: 0px; padding:0px; float:left;">
+    <div class="column" style="float: left; padding:0px;">
+        <div style="height: 100%;" ng-include="'../../includes/menu.html'"></div>
+    </div>
+    <div class="column" style="width:700px; margin:0 auto;" ng-init="getSupplier()" ng-app="MyTestSafeweb" ng-controller="SupplierController">
+        <h2 class="ui header">Cadastro de Fornecedor</h2>
+        <form class="ui form segment" style="width: 100%;">
+            <div class="field">
+                <label>Nome</label>
+                <input placeholder="Nome" name="name" ng-model="name" type="text">
+            </div>
+            <div class="field">
+                <label>CPF/CNPJ</label>
+                <input placeholder="CPF ou CNPJ" name="cpfcnpj" ng-model="cpfcnpj" type="text">
+            </div>
+            <div class="field">
+                <label>Telefone</label>
+                <input placeholder="Telefone" name="phonenumber" ng-model="phonenumber" type="text">
+            </div>
+            <div class="field">
+                <label>E-mail</label>
+                <input placeholder="E-mail" name="email" ng-model="email" type="text">
+            </div>
+            <div class="ui primary submit button" ng-click="editSupplier()">Salvar alterações</div>
+            <div class="ui clear button">Limpar</div>
+        </form>
+    </div>
+</div>
