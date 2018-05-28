@@ -10,9 +10,13 @@ O sistema permite realizar o gerenciamento de aprovações de propostas de um se
 - Cadastro de fornecedores;
 - Cadastro de propostas;
 
-Pontos a melhorar:
+Alguns pontos a melhorar:
 - Autenticação de usuário.
 - Visão por perfil de usuário.
 - Validação dos campos de formulário.
 - Utilizar contexto transacional.
 - UX.
+
+Credenciais para primeiro acesso:
+Usuário: admin
+Senha: admin
