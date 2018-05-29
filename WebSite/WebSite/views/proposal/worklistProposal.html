@@ -3,7 +3,7 @@
         <div style="height: 100%;" ng-include="'../../includes/menu.html'"></div>
     </div>
     <div class="column">
-        <div ng-app="MyTestSafeweb" ng-controller="ProposalController" ng-init="load()" style="width:950px; margin: 0 auto;">
+        <div ng-app="MyTestSafeweb" ng-controller="ProposalController" ng-init="getProposalsByUser()" style="width:950px; margin: 0 auto;">
             <h1>Lista de Propostas</h1>
             <table class="ui celled table">
                 <thead>
@@ -18,7 +18,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="proposal in Proposals | filter: { Expireded : false }">
+                    <tr ng-repeat="proposal in Proposals">
                         <td style="color:#f00; font-weight: bold;">{{ proposal.ExpirationDate | date: "dd/MM/yyyy" }}</td>
                         <td>{{ proposal.Name }}</td>
                         <td>{{ proposal.CategoryName }}</td>
@@ -26,7 +26,7 @@
                         <td>{{ proposal.Value | currency : "R$" : 2 }}</td>
                         <td>{{ proposal.StatusDescription }}</td>
                         <td style="text-align: center;">
-                            <div class="ui buttons" ng-if="proposal.Status != 2 && proposal.Status != 3 && userProfile > 1">
+                            <div class="ui buttons" ng-if="userProfile > 1">
                                 <button class="ui positive button" ng-click="updateStatus(proposal.Id, 2)">Aprovar</button>
                                 <div class="or" data-text="ou"></div>
                                 <button class="ui red button active" ng-click="updateStatus(proposal.Id, 3)">Reprovar</button>

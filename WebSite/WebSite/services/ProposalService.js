@@ -11,6 +11,10 @@
             return $http.get(urlBase + '/' + id);
         };
 
+        this.getProposalsByUser = function (idUser) {
+            return $http.get(urlBase + '/ByUser/' + idUser);
+        };
+
         this.insertProposal = function (proposal) {
             return $http.post(urlBase + '/Post', proposal);
         };

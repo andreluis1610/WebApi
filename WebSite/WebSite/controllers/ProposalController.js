@@ -37,9 +37,27 @@
                         alert(response.data.Message);
                     }
                 },
-                    function (err) {
-                        alert("Erro");
-                    });
+                function (err) {
+                    alert("Erro");
+                });
+        }
+    };
+
+    $scope.getProposalsByUser = function () {
+        var id = JSON.parse(localStorage.getItem('userData')).Id;
+
+        if (id != null && id != undefined) {
+            ProposalService.getProposalsByUser(id)
+                .then(function (response) {
+                    if (response.data.IsOk) {
+                        $scope.Proposals = response.data.Result;
+                    } else {
+                        alert(response.data.Message);
+                    }
+                },
+                function (err) {
+                    alert("Erro");
+                });
         }
     };
 
@@ -148,7 +166,7 @@
                 .then(function (response) {
                     if (response.data.IsOk) {
                         alert(response.data.Message);
-                        $scope.load();
+                        $scope.getProposalsByUser();
                     } else {
                         alert(response.data.Message);
                     }

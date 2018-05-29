@@ -18,17 +18,17 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("DeadLine")]
-        public ResultAction Get(string date)
-        {
-            return new ProposalBusiness().Get();
-        }
-
-        [HttpGet]
         [Route("{id}")]
         public ResultAction Get(int id)
         {
             return new ProposalBusiness().Get(id);
+        }
+
+        [HttpGet]
+        [Route("ByUser/{idUser}")]
+        public ResultAction GetByUser(int idUser)
+        {
+            return new ProposalBusiness().GetByUser(idUser);
         }
 
         [HttpPost]

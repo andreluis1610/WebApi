@@ -43,6 +43,49 @@ namespace WebAPI.Models.Business
             return result;
         }
 
+        internal ResultAction GetByUser(int idUser)
+        {
+            ResultAction result = new ResultAction();
+
+            User user = new UserService().Get(idUser);
+            if (user != null)
+            {
+                List<ProposalDTO> proposals = new ProposalService().Get();
+                if (proposals.Any())
+                {
+                    proposals = proposals.Where(x => !x.Expireded).ToList();
+
+                    if (proposals.Any())
+                    {
+                        result.IsOk = true;
+
+                        if (user.UserProfile == Profile.FinancialAnalyst)
+                        {
+                            result.Result = proposals.Where(prop => (Status)prop.Status.Value == Status.Registred).ToList();
+                        }
+                        else if (user.UserProfile == Profile.CFO)
+                        {
+                            result.Result = proposals.Where(prop => (Status)prop.Status.Value == Status.Registred || (Status)prop.Status.Value == Status.PendingDirectors).ToList();
+                        }
+                    }
+                    else
+                    {
+                        result.Message = "Nenhuma proposta para aprovação.";
+                    }
+                }
+                else
+                {
+                    result.Message = "Nenhuma proposta cadastrada.";
+                }
+            }
+            else
+            {
+                result.Message = "Usuário não encontrado.";
+            }
+
+            return result;
+        }
+
         internal ResultAction Get()
         {
             List<ProposalDTO> proposals = new ProposalService().Get();
