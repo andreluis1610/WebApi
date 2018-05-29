@@ -23,7 +23,8 @@ namespace WebAPI.Models.Services
         internal int Post(Entities.Configuration configuration)
         {
             context.Configurations.Add(configuration);
-            return context.SaveChanges();
+            context.SaveChanges();
+            return configuration.Id;
         }
 
         internal int Delete(int id)

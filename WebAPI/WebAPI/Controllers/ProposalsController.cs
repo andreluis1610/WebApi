@@ -39,6 +39,13 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut]
+        [Route("PutStatus/{idUser}/{idProposal}/{status}")]
+        public ResultAction Put(int idUser, int idProposal, int status)
+        {
+            return new ProposalBusiness().Put(idUser, idProposal, status);
+        }
+
+        [HttpPut]
         [Route("Put")]
         public ResultAction Put([FromBody]ProposalDTO proposal)
         {

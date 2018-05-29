@@ -9,11 +9,17 @@ namespace WebAPI.Models.Entities
     {
         public int IdCategory { get; set; }
         public int IdSupplier { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime CreationDate { get; set; }
+        public DateTime ExpirationDate { get; set; }
         public decimal Value { get; set; }
         public string Description { get; set; }
         public Status Status { get; set; }
         public StatusNow StatusNow { get; set; }
         public string NameFile { get; set; }
-    }
+
+        public Proposal()
+        {
+            CreationDate = DateTime.Now;
+        }
+   }
 }

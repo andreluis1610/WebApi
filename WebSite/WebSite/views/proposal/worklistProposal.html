@@ -1,0 +1,46 @@
+﻿<div class="ui four column doubling stackable grid container" style="height:100%; margin: 0px; padding:0px; float:left;">
+    <div class="column" style="float: left; padding:0px;">
+        <div style="height: 100%;" ng-include="'../../includes/menu.html'"></div>
+    </div>
+    <div class="column">
+        <div ng-app="MyTestSafeweb" ng-controller="ProposalController" ng-init="load()" style="width:950px; margin: 0 auto;">
+            <h1>Lista de Propostas</h1>
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>Expira em</th>
+                        <th>Nome</th>
+                        <th>Categoria</th>
+                        <th>Fornecedor</th>
+                        <th>Valor</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="proposal in Proposals | filter: { Expireded : false }">
+                        <td style="color:#f00; font-weight: bold;">{{ proposal.ExpirationDate | date: "dd/MM/yyyy" }}</td>
+                        <td>{{ proposal.Name }}</td>
+                        <td>{{ proposal.CategoryName }}</td>
+                        <td>{{ proposal.SupplierName }}</td>
+                        <td>{{ proposal.Value | currency : "R$" : 2 }}</td>
+                        <td>{{ proposal.StatusDescription }}</td>
+                        <td style="text-align: center;">
+                            <div class="ui buttons" ng-if="proposal.Status != 2 && proposal.Status != 3">
+                                <button class="ui positive button" ng-click="updateStatus(proposal.Id, 2)">Aprovar</button>
+                                <div class="or" data-text="ou"></div>
+                                <button class="ui red button active" ng-click="updateStatus(proposal.Id, 3)">Reprovar</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+    
+    

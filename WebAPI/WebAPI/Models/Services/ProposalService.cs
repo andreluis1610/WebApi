@@ -4,6 +4,7 @@ using System.Linq;
 using WebAPI.Models.Database;
 using WebAPI.Models.DTO;
 using WebAPI.Models.Entities;
+using WebAPI.Models.Enums;
 
 namespace WebAPI.Models.Services
 {
@@ -29,14 +30,18 @@ namespace WebAPI.Models.Services
                             .Select(item => new ProposalDTO
                              {
                                  CategoryName = item.join.category.Name,
-                                 Date = item.join.proposal.Date.ToString("dd/MM/yyyy"),
+                                 CreationDate = item.join.proposal.CreationDate,
+                                 ExpirationDate = item.join.proposal.ExpirationDate,
+                                 Expireded = DateTime.Now > item.join.proposal.ExpirationDate,
                                  Description = item.join.proposal.Description,
                                  Id = item.join.proposal.Id,
                                  IdCategory = item.join.proposal.IdCategory,
                                  IdSupplier = item.join.proposal.IdSupplier,
                                  Name = item.join.proposal.Name,
                                  NameFile = item.join.proposal.NameFile,
+                                 Status = (int)item.join.proposal.Status,
                                  StatusDescription = EnumDescription.GetDescription(item.join.proposal.Status),
+                                 StatusNow = (int)item.join.proposal.StatusNow,
                                  StatusNowDescription = EnumDescription.GetDescription(item.join.proposal.StatusNow),
                                  SupplierName = item.supplier.Name,
                                  Value = item.join.proposal.Value
@@ -53,7 +58,8 @@ namespace WebAPI.Models.Services
         internal int Post(Proposal proposal)
         {
             context.Proposals.Add(proposal);
-            return context.SaveChanges();
+            context.SaveChanges();
+            return proposal.Id;
         }
 
         internal int Delete(int id)
@@ -76,6 +82,22 @@ namespace WebAPI.Models.Services
                 upd.IdSupplier = proposal.IdSupplier;
                 upd.Name = proposal.Name;
                 upd.Value = proposal.Value;
+
+                row = context.SaveChanges();
+            }
+
+            return row;
+        }
+
+        internal int PutStatus(int idProposal, Status status, StatusNow statusNow)
+        {
+            Proposal upd = context.Proposals.First(x => x.Id == idProposal);
+            int row = 0;
+
+            if (upd != null)
+            {
+                upd.Status = status;
+                upd.StatusNow = statusNow;
 
                 row = context.SaveChanges();
             }

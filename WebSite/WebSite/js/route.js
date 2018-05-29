@@ -56,6 +56,14 @@ app.config(function ($routeProvider) {
             templateUrl: "../views/proposal/editProposal.html",
             controller: "ProposalController"
         })
+        .when("/proposal/work", {
+            templateUrl: "../views/proposal/worklistProposal.html",
+            controller: "ProposalController"
+        })
+        .when("/historic/:id", {
+            templateUrl: "../views/historic/historic.html",
+            controller: "HistoricController"
+        })
         .when("/configuration", {
             templateUrl: "../views/configuration/editConfiguration.html",
             controller: "ConfigurationController"

@@ -23,7 +23,8 @@ namespace WebAPI.Models.Services
         internal int Post(Category category)
         {
             context.Categories.Add(category);
-            return context.SaveChanges();
+            context.SaveChanges();
+            return category.Id;
         }
 
         internal int Delete(int id)

@@ -16,5 +16,6 @@ namespace WebAPI.Models.Database
         public DbSet<Category> Categories { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Proposal> Proposals { get; set; }
+        public DbSet<HistoryProposal> Historic { get; set; }
     }
 }

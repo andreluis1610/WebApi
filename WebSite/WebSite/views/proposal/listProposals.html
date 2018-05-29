@@ -13,6 +13,7 @@
                         <th>Categoria</th>
                         <th>Fornecedor</th>
                         <th>Data</th>
+                        <th>Expira em</th>
                         <th>Valor</th>
                         <th>Status</th>
                         <th></th>
@@ -24,12 +25,14 @@
                         <td>{{ proposal.Name }}</td>
                         <td>{{ proposal.CategoryName }}</td>
                         <td>{{ proposal.SupplierName }}</td>
-                        <td>{{ proposal.Date }}</td>
-                        <td>R$ {{ proposal.Value }}</td>
+                        <td>{{ proposal.CreationDate | date: "dd/MM/yyyy" }}</td>
+                        <td style="color:#f00; font-weight: bold;">{{ proposal.ExpirationDate | date: "dd/MM/yyyy" }}</td>
+                        <td>{{ proposal.Value | currency : "R$" : 2 }}</td>
                         <td>{{ proposal.StatusDescription }}</td>
                         <td style="text-align: center;">
-                            <i class="edit icon" style="cursor:pointer;" ng-click="edit(proposal.Id)"></i>
-                            <i class="trash alternate outline icon" style="cursor:pointer;" ng-click="deleteProposal(proposal.Id)"></i>
+                            <i class="edit icon" style="cursor:pointer;" ng-if="proposal.StatusNow = 1 && proposal.Status == 1" ng-click="edit(proposal.Id)"></i>
+                            <i class="trash alternate outline icon" style="cursor:pointer;" ng-if="proposal.StatusNow == 1 && proposal.Status == 1" ng-click="deleteProposal(proposal.Id)"></i>
+                            <i class="history icon" style="cursor:pointer;" ng-click="historic(proposal.Id)"></i>
                         </td>
                     </tr>
                 </tbody>
@@ -38,7 +41,7 @@
                         <th></th>
                         <th colspan="8">
                             <div class="ui right floated small primary labeled icon button" ng-click="go('/proposal')">
-                                <i class="plus icon"></i> Fornecedor
+                                <i class="plus icon"></i> Proposta
                             </div>
                         </th>
                     </tr>

@@ -30,7 +30,8 @@ namespace WebAPI.Models.Services
         internal int Post(User user)
         {
             context.Users.Add(user);
-            return context.SaveChanges();
+            context.SaveChanges();
+            return user.Id;
         }
 
         internal int Delete(int id)

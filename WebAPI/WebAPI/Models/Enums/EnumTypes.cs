@@ -35,7 +35,9 @@ namespace WebAPI.Models.Enums
         [Description("Reprovada pelo Analista Financeiro")]
         DisapprovedByFinancialAnalyst = 4,
         [Description("Reprovada pelo Diretor Financeiro")]
-        DisapprovedByCFO = 5
+        DisapprovedByCFO = 5,
+        [Description("Proposta Expirada")]
+        Expired = 6
     }
 
     public enum TimeConfig
@@ -44,5 +46,23 @@ namespace WebAPI.Models.Enums
         Hour = 1,
         [Description("Dia")]
         Day = 2
+    }
+
+    public enum ActionHistoric
+    {
+        [Description("Proposta Cadastrada")]
+        Registred = 1,
+        [Description("Proposta Editada")]
+        Edited = 2,
+        [Description("Proposta aprovada pelo Analista Financeiro")]
+        ApprovedByFinancialAnalyst = 3,
+        [Description("Proposta aprovada pelo Diretor Financeiro")]
+        ApprovedByCFO = 4,
+        [Description("Proposta reprovada pelo Analista Financeiro")]
+        DisapprovedByFinancialAnalyst = 5,
+        [Description("Proposta reprovada pelo Diretor Financeiro")]
+        DisapprovedByCFO = 6,
+        [Description("Proposta Expirada")]
+        Expired = 7
     }
 }

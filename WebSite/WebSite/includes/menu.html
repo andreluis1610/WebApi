@@ -12,26 +12,26 @@
     <div class="item">
         <div class="header">Cadastro</div>
         <div class="menu">
-            <a class="item" href="#!user/list">Usuários</a>
-            <a class="item" href="#!supplier/list">Fornecedores</a>
-            <a class="item" href="#!category/list">Categorias</a>
-            <a class="item" href="#!proposal/list">Propostas</a>
+            <a class="item" href="#!user/list" ng-if="getUserProfile() == 1">Usuários</a>
+            <a class="item" href="#!supplier/list" ng-if="getUserProfile() != 1">Fornecedores</a>
+            <a class="item" href="#!category/list" ng-if="getUserProfile() != 1">Categorias</a>
+            <a class="item" href="#!proposal/list" ng-if="getUserProfile() != 1">Propostas</a>
         </div>
     </div>
-    <div class="item">
+    <div class="item" ng-if="getUserProfile() != 1">
         <div class="header">Propostas</div>
         <div class="menu">
-            <a class="item" href="#!/">Worklist de Propostas</a>
+            <a class="item" href="#!proposal/work">Worklist de Propostas</a>
         </div>
     </div>
-    <div class="item">
+    <div class="item" ng-if="getUserProfile() == 1">
         <div class="header">Configuração</div>
         <div class="menu">
             <a class="item" href="#!configuration">Prazos</a>
         </div>
     </div>
     <div class="item"></div>
-    <a class="item" href="#">
+    <a class="item" ng-click="logoff()">
         <b>Sair</b>
     </a>
 </div>

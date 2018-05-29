@@ -68,6 +68,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="controllers\HistoricController.js" />
     <Content Include="controllers\CategoryController.js" />
     <Content Include="controllers\ConfigurationController.js" />
     <Content Include="controllers\ProposalController.js" />
@@ -226,6 +227,7 @@
     <Content Include="semantic\dist\themes\default\assets\fonts\icons.svg" />
     <Content Include="semantic\dist\themes\default\assets\fonts\outline-icons.svg" />
     <Content Include="semantic\dist\themes\default\assets\images\flags.png" />
+    <Content Include="services\HistoricService.js" />
     <Content Include="services\CategoryService.js" />
     <Content Include="services\ConfigurationService.js" />
     <Content Include="services\ProposalService.js" />
@@ -235,7 +237,9 @@
     <Content Include="views\category\listCategories.html" />
     <Content Include="views\category\category.html" />
     <Content Include="views\configuration\editConfiguration.html" />
+    <Content Include="views\historic\historic.html" />
     <Content Include="views\proposal\editProposal.html" />
+    <Content Include="views\proposal\worklistProposal.html" />
     <Content Include="views\proposal\listProposals.html" />
     <Content Include="views\proposal\proposal.html" />
     <Content Include="views\supplier\supplier.html" />

@@ -1,0 +1,42 @@
+﻿<div class="ui four column doubling stackable grid container" style="height:100%; margin: 0px; padding:0px; float:left;">
+    <div class="column" style="float: left; padding:0px;">
+        <div style="height: 100%;" ng-include="'../../includes/menu.html'"></div>
+    </div>
+    <div class="column">
+        <div ng-app="MyTestSafeweb" ng-controller="HistoricController" ng-init="load()" style="width:800px; margin: 0 auto;">
+            <h1>Histórico</h1>
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th>Usuário</th>
+                        <th>Ação</th>
+                        <th>Data e Hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="historic in Historic">
+                        <td>{{ historic.UserName }}</td>
+                        <td>{{ historic.ActionDescription }}</td>
+                        <td>{{ historic.ActionDate | date:'dd/MM/yyyy HH:mm' }}</td>
+                    </tr>
+                </tbody>
+                <tfoot class="full-width">
+                    <tr>
+                        <th></th>
+                        <th colspan="3">
+                            <div class="ui right floated small primary labeled icon button" ng-click="back()">
+                                <i class="chevron circle left icon"></i> Voltar
+                            </div>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+    
+    

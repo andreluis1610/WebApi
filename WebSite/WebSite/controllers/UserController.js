@@ -1,6 +1,7 @@
 ﻿app.controller('UserController', ['$scope', '$routeParams', '$location', 'UserService', function ($scope, $routeParams, $location, UserService) {
 
     $scope.Users;
+    $scope.UserData;
 
     $scope.load = function () {
         UserService.getUsers()
@@ -25,6 +26,17 @@
         }
 
         return name;
+    };
+
+    $scope.getUserProfile = function () {
+        var user = JSON.parse(localStorage.getItem('userData'));
+        var profile = 0;
+
+        if (user != null) {
+            profile = user.UserProfile;
+        }
+
+        return profile;
     };
 
     $scope.getUser = function () {
@@ -135,6 +147,13 @@
                 function (err) {
                     alert("Erro");
                 });
+    };
+
+    $scope.logoff = function () {
+        if (confirm("Deseja sair do sistema?")) {
+            localStorage.removeItem('userData');
+            $scope.go('/');
+        }
     };
 
     $scope.go = function (path) {

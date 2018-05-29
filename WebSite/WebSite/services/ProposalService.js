@@ -18,6 +18,9 @@
         this.updateProposal = function (proposal) {
             return $http.put(urlBase + '/Put', proposal);
         };
+        this.updateStatus = function (idUser, idProposal, status) {
+            return $http.put(urlBase + '/PutStatus/' + idUser + '/' + idProposal + '/' + status);
+        };
 
         this.deleteProposal = function (id) {
             return $http.delete(urlBase + '/Delete/' + id);

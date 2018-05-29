@@ -23,7 +23,8 @@ namespace WebAPI.Models.Services
         internal int Post(Supplier supplier)
         {
             context.Suppliers.Add(supplier);
-            return context.SaveChanges();
+            context.SaveChanges();
+            return supplier.Id;
         }
 
         internal int Delete(int id)
