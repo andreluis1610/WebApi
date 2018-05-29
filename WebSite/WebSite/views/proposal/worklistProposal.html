@@ -26,7 +26,7 @@
                         <td>{{ proposal.Value | currency : "R$" : 2 }}</td>
                         <td>{{ proposal.StatusDescription }}</td>
                         <td style="text-align: center;">
-                            <div class="ui buttons" ng-if="proposal.Status != 2 && proposal.Status != 3">
+                            <div class="ui buttons" ng-if="proposal.Status != 2 && proposal.Status != 3 && userProfile > 1">
                                 <button class="ui positive button" ng-click="updateStatus(proposal.Id, 2)">Aprovar</button>
                                 <div class="or" data-text="ou"></div>
                                 <button class="ui red button active" ng-click="updateStatus(proposal.Id, 3)">Reprovar</button>

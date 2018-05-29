@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using WebAPI.Models.DTO;
 using WebAPI.Models.Entities;
 using WebAPI.Models.Enums;
@@ -29,24 +30,30 @@ namespace WebAPI.Models.Business
 
         internal ResultAction Post(HistoryProposalDTO historic)
         {
-            HistoryProposal newHistoric = new HistoryProposal();
-            newHistoric.IdUser = historic.IdUser;
-            newHistoric.IdProposal = historic.IdProposal;
-            newHistoric.Action = (ActionHistoric)historic.Action;
-
-            int id = new HistoryProposalService().Post(newHistoric);
-
             ResultAction result = new ResultAction();
 
-            if (id > 0)
+            using (var scope = new TransactionScope())
             {
-                result.IsOk = true;
-                result.Result = id;
-                result.Message = "Ação do usuário salvo com sucesso.";
-            }
-            else
-            {
-                result.Message = "Erro ao salvar a ação do usuário.";
+                HistoryProposal newHistoric = new HistoryProposal();
+                newHistoric.IdUser = historic.IdUser;
+                newHistoric.IdProposal = historic.IdProposal;
+                newHistoric.Action = (ActionHistoric)historic.Action;
+
+                int id = new HistoryProposalService().Post(newHistoric);
+
+                if (id > 0)
+                {
+                    result.IsOk = true;
+                    result.Result = id;
+                    result.Message = "Ação do usuário salvo com sucesso.";
+                }
+                else
+                {
+                    result.Message = "Erro ao salvar a ação do usuário.";
+                }
+
+                scope.Complete();
+                scope.Dispose();
             }
 
             return result;

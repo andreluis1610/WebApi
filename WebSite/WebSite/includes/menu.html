@@ -12,19 +12,19 @@
     <div class="item">
         <div class="header">Cadastro</div>
         <div class="menu">
-            <a class="item" href="#!user/list" ng-if="getUserProfile() == 1">Usuários</a>
-            <a class="item" href="#!supplier/list" ng-if="getUserProfile() != 1">Fornecedores</a>
-            <a class="item" href="#!category/list" ng-if="getUserProfile() != 1">Categorias</a>
-            <a class="item" href="#!proposal/list" ng-if="getUserProfile() != 1">Propostas</a>
+            <a class="item" href="#!user/list" ng-if="getUserProfile() == 0">Usuários</a>
+            <a class="item" href="#!supplier/list" ng-if="getUserProfile() != 0">Fornecedores</a>
+            <a class="item" href="#!category/list" ng-if="getUserProfile() != 0">Categorias</a>
+            <a class="item" href="#!proposal/list" ng-if="getUserProfile() != 0">Propostas</a>
         </div>
     </div>
-    <div class="item" ng-if="getUserProfile() != 1">
+    <div class="item" ng-if="getUserProfile() != 0">
         <div class="header">Propostas</div>
         <div class="menu">
             <a class="item" href="#!proposal/work">Worklist de Propostas</a>
         </div>
     </div>
-    <div class="item" ng-if="getUserProfile() == 1">
+    <div class="item" ng-if="getUserProfile() == 0">
         <div class="header">Configuração</div>
         <div class="menu">
             <a class="item" href="#!configuration">Prazos</a>

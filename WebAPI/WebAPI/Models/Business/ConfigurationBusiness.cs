@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using System.Web;
 using WebAPI.Models.DTO;
 using WebAPI.Models.Entities;
@@ -38,15 +39,21 @@ namespace WebAPI.Models.Business
         public ResultAction Put(ConfigurationDTO configuration)
         {
             ResultAction result = new ResultAction();
-            
-            if (configuration.Id != null)
+
+            using (var scope = new TransactionScope())
             {
-                result.IsOk = true;
-                result.Result = new ConfigurationService().Put(configuration); ;
-            }
-            else
-            {
-                result.Message = "Erro ao atualizar a configuração não encontrada.";
+                if (configuration.Id != null)
+                {
+                    result.IsOk = true;
+                    result.Result = new ConfigurationService().Put(configuration); ;
+                }
+                else
+                {
+                    result.Message = "Erro ao atualizar a configuração não encontrada.";
+                }
+
+                scope.Complete();
+                scope.Dispose();
             }
 
             return result;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using WebAPI.Models.DTO;
 using WebAPI.Models.Entities;
 using WebAPI.Models.Enums;
@@ -48,7 +49,13 @@ namespace WebAPI.Models.Business
 
             if (proposals.Any(x => x.Expireded))
             {
-                UpdateStatusExpired(proposals);
+                using (var scope = new TransactionScope())
+                {
+                    UpdateStatusExpired(proposals);
+
+                    scope.Complete();
+                    scope.Dispose();
+                }
             }
 
             ResultAction result = new ResultAction();
@@ -68,32 +75,38 @@ namespace WebAPI.Models.Business
 
         internal ResultAction Post(ProposalDTO proposal)
         {
-            Proposal newProposal = new Proposal();
-            newProposal.ExpirationDate = GetExpirationDate(newProposal.CreationDate);
-            newProposal.Description = proposal.Description;
-            newProposal.IdCategory = proposal.IdCategory;
-            newProposal.IdSupplier = proposal.IdSupplier;
-            newProposal.Name = proposal.Name;
-            newProposal.NameFile = proposal.NameFile;
-            newProposal.Status = Status.Registred;
-            newProposal.StatusNow = StatusNow.Registred;
-            newProposal.Value = proposal.Value;
-
-            int id = new ProposalService().Post(newProposal);
-
             ResultAction result = new ResultAction();
 
-            if (id > 0)
+            using (var scope = new TransactionScope())
             {
-                CreateHistory(proposal.IdUser.Value, id, ActionHistoric.Registred);
+                Proposal newProposal = new Proposal();
+                newProposal.ExpirationDate = GetExpirationDate(newProposal.CreationDate);
+                newProposal.Description = proposal.Description;
+                newProposal.IdCategory = proposal.IdCategory;
+                newProposal.IdSupplier = proposal.IdSupplier;
+                newProposal.Name = proposal.Name;
+                newProposal.NameFile = proposal.NameFile;
+                newProposal.Status = Status.Registred;
+                newProposal.StatusNow = StatusNow.Registred;
+                newProposal.Value = proposal.Value;
 
-                result.IsOk = true;
-                result.Result = id;
-                result.Message = "Proposta salva com sucesso.";
-            }
-            else
-            {
-                result.Message = "Erro ao criar uma nova proposta.";
+                int id = new ProposalService().Post(newProposal);
+
+                if (id > 0)
+                {
+                    CreateHistory(proposal.IdUser.Value, id, ActionHistoric.Registred);
+
+                    result.IsOk = true;
+                    result.Result = id;
+                    result.Message = "Proposta salva com sucesso.";
+                }
+                else
+                {
+                    result.Message = "Erro ao criar uma nova proposta.";
+                }
+
+                scope.Complete();
+                scope.Dispose();
             }
 
             return result;
@@ -103,24 +116,31 @@ namespace WebAPI.Models.Business
         {
             ResultAction result = new ResultAction();
             int row = 0;
-            if (proposal.Id != null)
-            {
-                row = new ProposalService().Put(proposal);
 
-                if (row > 0)
+            using (var scope = new TransactionScope())
+            {
+                if (proposal.Id != null)
                 {
-                    CreateHistory(proposal.IdUser.Value, proposal.Id.Value, ActionHistoric.Edited);
-                    result.IsOk = true;
-                    result.Result = row;
+                    row = new ProposalService().Put(proposal);
+
+                    if (row > 0)
+                    {
+                        CreateHistory(proposal.IdUser.Value, proposal.Id.Value, ActionHistoric.Edited);
+                        result.IsOk = true;
+                        result.Result = row;
+                    }
+                    else
+                    {
+                        result.Message = "Erro ao atualizar a proposta.";
+                    }
                 }
                 else
                 {
-                    result.Message = "Erro ao atualizar a proposta.";
+                    result.Message = "Proposta não encontrada.";
                 }
-            }
-            else
-            {
-                result.Message = "Proposta não encontrada.";
+
+                scope.Complete();
+                scope.Dispose();
             }
 
             return result;
@@ -128,68 +148,75 @@ namespace WebAPI.Models.Business
 
         internal ResultAction Put(int idUser, int idProposal, int status)
         {
-            Proposal prop = new ProposalService().Get(idProposal);
-            User user = new UserService().Get(idUser);
-            Status operationUser = (Status)status;
-            ActionHistoric? action = null;
+            ResultAction result = new ResultAction();
 
-            if (user.UserProfile == Profile.FinancialAnalyst)
+            using (var scope = new TransactionScope())
             {
-                if (prop.StatusNow == StatusNow.Registred)
-                {
-                    if (operationUser == Status.Disapproved)
-                    {
-                        prop.StatusNow = StatusNow.DisapprovedByFinancialAnalyst;
-                        prop.Status = Status.Disapproved;
-                        action = ActionHistoric.DisapprovedByFinancialAnalyst;
-                    }
-                    else
-                    {
-                        prop.StatusNow = StatusNow.ApprovedByFinancialAnalyst;
-                        action = ActionHistoric.ApprovedByFinancialAnalyst;
+                Proposal prop = new ProposalService().Get(idProposal);
+                User user = new UserService().Get(idUser);
+                Status operationUser = (Status)status;
+                ActionHistoric? action = null;
 
-                        if (prop.Value <= 10000)
+                if (user.UserProfile == Profile.FinancialAnalyst)
+                {
+                    if (prop.StatusNow == StatusNow.Registred)
+                    {
+                        if (operationUser == Status.Disapproved)
                         {
-                            prop.Status = Status.Approved;
+                            prop.StatusNow = StatusNow.DisapprovedByFinancialAnalyst;
+                            prop.Status = Status.Disapproved;
+                            action = ActionHistoric.DisapprovedByFinancialAnalyst;
                         }
                         else
                         {
-                            prop.Status = Status.PendingDirectors;
+                            prop.StatusNow = StatusNow.ApprovedByFinancialAnalyst;
+                            action = ActionHistoric.ApprovedByFinancialAnalyst;
+
+                            if (prop.Value <= 10000)
+                            {
+                                prop.Status = Status.Approved;
+                            }
+                            else
+                            {
+                                prop.Status = Status.PendingDirectors;
+                            }
                         }
                     }
                 }
-            }
-            else if (user.UserProfile == Profile.CFO)
-            {
-                if (prop.StatusNow == StatusNow.Registred || prop.Status == Status.PendingDirectors)
+                else if (user.UserProfile == Profile.CFO)
                 {
-                    prop.Status = operationUser;
+                    if (prop.StatusNow == StatusNow.Registred || prop.Status == Status.PendingDirectors)
+                    {
+                        prop.Status = operationUser;
 
-                    if (operationUser == Status.Disapproved)
-                    {
-                        prop.StatusNow = StatusNow.DisapprovedByCFO;
-                        action = ActionHistoric.DisapprovedByCFO;
-                    }
-                    else
-                    {
-                        prop.StatusNow = StatusNow.ApprovedByCFO;
-                        action = ActionHistoric.ApprovedByCFO;
+                        if (operationUser == Status.Disapproved)
+                        {
+                            prop.StatusNow = StatusNow.DisapprovedByCFO;
+                            action = ActionHistoric.DisapprovedByCFO;
+                        }
+                        else
+                        {
+                            prop.StatusNow = StatusNow.ApprovedByCFO;
+                            action = ActionHistoric.ApprovedByCFO;
+                        }
                     }
                 }
-            }
 
-            ResultAction result = new ResultAction();
-            int row = PutStatus(idUser, idProposal, prop.Status, prop.StatusNow, action.Value);
+                int row = PutStatus(idUser, idProposal, prop.Status, prop.StatusNow, action.Value);
 
-            if (row > 0)
-            {
-                result.IsOk = true;
-                result.Result = row;
-                result.Message = "Status alterado.";
-            }
-            else
-            {
-                result.Message = "Erro ao alterar status.";
+                if (row > 0)
+                {
+                    result.IsOk = true;
+                    result.Result = row;
+                    result.Message = "Status alterado.";
+                }
+                else
+                {
+                    result.Message = "Erro ao alterar status.";
+                }
+
+                scope.Complete();
+                scope.Dispose();
             }
 
             return result;
@@ -209,18 +236,25 @@ namespace WebAPI.Models.Business
 
         internal ResultAction Delete(int id)
         {
-            int row = new ProposalService().Delete(id);
             ResultAction result = new ResultAction();
 
-            if (row > 0)
+            using (var scope = new TransactionScope())
             {
-                result.IsOk = true;
-                result.Result = row;
-                result.Message = string.Empty;
-            }
-            else
-            {
-                result.Message = "Erro ao excluir a proposta.";
+                int row = new ProposalService().Delete(id);
+
+                if (row > 0)
+                {
+                    result.IsOk = true;
+                    result.Result = row;
+                    result.Message = string.Empty;
+                }
+                else
+                {
+                    result.Message = "Erro ao excluir a proposta.";
+                }
+
+                scope.Complete();
+                scope.Dispose();
             }
 
             return result;

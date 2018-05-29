@@ -5,6 +5,7 @@ using WebAPI.Models.DTO;
 using WebAPI.Models.Entities;
 using WebAPI.Models.Enums;
 using WebAPI.Models.Services;
+using System.Transactions;
 
 namespace WebAPI.Models.Business
 {
@@ -91,27 +92,33 @@ namespace WebAPI.Models.Business
 
         internal ResultAction Post(UserDTO user)
         {
-            User newUser = new User();
-            newUser.Birthdate = Convert.ToDateTime(user.Birthdate);
-            newUser.Cpf = user.Cpf;
-            newUser.Name = user.Name;
-            newUser.Password = user.Password;
-            newUser.UserName = user.UserName;
-            newUser.UserProfile = (Profile)user.UserProfile;
-
-            int row = new UserService().Post(newUser);
-
             ResultAction result = new ResultAction();
 
-            if(row > 0)
+            using (var scope = new TransactionScope())
             {
-                result.IsOk = true;
-                result.Result = row;
-                result.Message = "Usuário salvo com sucesso.";
-            }
-            else
-            {
-                result.Message = "Erro ao criar um novo usuário.";
+                User newUser = new User();
+                newUser.Birthdate = Convert.ToDateTime(user.Birthdate);
+                newUser.Cpf = user.Cpf;
+                newUser.Name = user.Name;
+                newUser.Password = user.Password;
+                newUser.UserName = user.UserName;
+                newUser.UserProfile = (Profile)user.UserProfile;
+
+                int row = new UserService().Post(newUser);
+
+                if (row > 0)
+                {
+                    result.IsOk = true;
+                    result.Result = row;
+                    result.Message = "Usuário salvo com sucesso.";
+                }
+                else
+                {
+                    result.Message = "Erro ao criar um novo usuário.";
+                }
+
+                scope.Complete();
+                scope.Dispose();
             }
 
             return result;
@@ -119,24 +126,31 @@ namespace WebAPI.Models.Business
         public ResultAction Put(UserDTO user)
         {
             ResultAction result = new ResultAction();
-            int row = 0;
-            if (user.Id != null)
-            {
-                row = new UserService().Put(user);
 
-                if(row > 0)
+            using (var scope = new TransactionScope())
+            {
+                int row = 0;
+                if (user.Id != null)
                 {
-                    result.IsOk = true;
-                    result.Result = row;
+                    row = new UserService().Put(user);
+
+                    if (row > 0)
+                    {
+                        result.IsOk = true;
+                        result.Result = row;
+                    }
+                    else
+                    {
+                        result.Message = "Erro ao atualizar o usuário.";
+                    }
                 }
                 else
                 {
-                    result.Message = "Erro ao atualizar o usuário.";
+                    result.Message = "Usuário não encontrado.";
                 }
-            }
-            else
-            {
-                result.Message = "Usuário não encontrado.";
+
+                scope.Complete();
+                scope.Dispose();
             }
 
             return result;
@@ -144,18 +158,25 @@ namespace WebAPI.Models.Business
 
         internal ResultAction Delete(int id)
         {
-            int row = new UserService().Delete(id);
             ResultAction result = new ResultAction();
 
-            if (row > 0)
+            using (var scope = new TransactionScope())
             {
-                result.IsOk = true;
-                result.Result = row;
-                result.Message = string.Empty;
-            }
-            else
-            {
-                result.Message = "Erro ao excluir o usuário.";
+                int row = new UserService().Delete(id);
+
+                if (row > 0)
+                {
+                    result.IsOk = true;
+                    result.Result = row;
+                    result.Message = string.Empty;
+                }
+                else
+                {
+                    result.Message = "Erro ao excluir o usuário.";
+                }
+
+                scope.Complete();
+                scope.Dispose();
             }
 
             return result;

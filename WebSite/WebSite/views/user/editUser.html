@@ -29,6 +29,7 @@
                 <label>Perfil</label>
                 <select class="ui search dropdown" ng-model="userprofile">
                     <option value="">Selecione um perfil</option>
+                    <option value="0" ng-selected="userprofile == 1">Administrador</option>
                     <option value="1" ng-selected="userprofile == 1">Analista de Compras</option>
                     <option value="2" ng-selected="userprofile == 2">Analista Financeiro</option>
                     <option value="3" ng-selected="userprofile == 3">Diretor Financeiro</option>

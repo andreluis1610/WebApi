@@ -4,6 +4,8 @@ namespace WebAPI.Models.Enums
 {
     public enum Profile
     {
+        [Description("Administrador")]
+        Administrator = 0,
         [Description("Analista de Compras")]
         BusinessAnalyst = 1,
         [Description("Analista Financeiro")]
