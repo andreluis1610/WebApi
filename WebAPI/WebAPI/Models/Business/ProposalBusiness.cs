@@ -90,7 +90,7 @@ namespace WebAPI.Models.Business
         {
             List<ProposalDTO> proposals = new ProposalService().Get();
 
-            if (proposals.Any(x => x.Expireded))
+            if (proposals.Any(x => x.Expireded && (Status)x.Status != Status.Approved && (Status)x.Status != Status.Disapproved))
             {
                 using (var scope = new TransactionScope())
                 {
